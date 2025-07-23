@@ -1,3 +1,4 @@
+<pre> 
 this backend folder should be in the same parent folder as the COMSA-NOW frontend folder:
 project/          <---one parent folder
 ├── frontend/     <---Cloned COMSA-NOW 
@@ -12,4 +13,4 @@ DB_PASS="databasePass" (usually empty "")
 run the sql query located in the schema file
 
 Happy coding!
-
+</pre>
