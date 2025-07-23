@@ -1,4 +1,5 @@
-<pre> 
+<pre>
+this is a backend repository for [https://github.com/jmprz/COMSA-NOW]
 this backend folder should be in the same parent folder as the COMSA-NOW frontend folder:
 project/          <---one parent folder
 ├── frontend/     <---Cloned COMSA-NOW 
