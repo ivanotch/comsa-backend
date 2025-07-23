@@ -10,18 +10,24 @@ function is_email_wrong(bool|array $result) {
     }
 }
 
-function is_pass_wrong(string $pass, string $hashedPass) {
-    if (!password_verify($pass, $hashedPass)) {
-        return true;
-    } else {
-        return false;
-    }
+function is_pass_wrong(string $pass, string $hashedPass): bool {
+    return $pass !== $hashedPass;
 }
 
-function is_input_empty(string $email, string $pass) {
-    if (empty($email) || empty($pass)) {
-        return true;
-    } else {
-        return false;
-    }
+// function is_pass_wrong(string $pass, string $hashedPass) {
+//     // if (!password_verify($pass, $hashedPass)) {
+//     //     return true;
+//     // } else {
+//     //     return false;
+//     // }
+
+//     if (!$pass === $hashedPass) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
+
+function is_input_empty(string $email, string $pass): bool {
+    return empty($email) || empty($pass);
 }

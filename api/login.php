@@ -1,11 +1,14 @@
 <?php
 
+
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
 header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $pass = $_POST["password"];
-
     try {
         require_once '../config/db.php';
         require_once '../model/login_model.php';
@@ -15,22 +18,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (is_input_empty($email, $pass)) {
             $errors["empty_input"] = "Fill in all fields";
+        } else {
+            $result = get_user($pdo, $email);
+
+            if (!$result) {
+                $errors["email"] = "No such user exists";
+            } elseif (is_pass_wrong($pass, $result["password"])) {
+                $errors["password"] = "Incorrect password!";
+            }
         }
-
-        $result = get_user($pdo, $email);
-
-        if (!$result) {
-            $errors["no_user"] = "No such user exist";
-        }
-
-        if (is_email_wrong($result)) {
-            $errors["login_incorrect"] = "Incorrect login info!";
-        }
-
-        if (!is_email_wrong($result) && is_pass_wrong($pass, $result["password"])) {
-            $errors["login_incorrect"] = "Incorrect login info!";
-        }
-
         require_once '../config/session.php';
 
         if ($errors) {
@@ -53,18 +49,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["last_regeneration"] = time();
 
-        echo json_encode([
-            "success" => true,
-            "message" => "Signup successful"
-        ]);
-
         $pdo = null;
         $stmt = null;
 
+        echo json_encode([
+            "success" => true,
+            "message" => "login successful"
+        ]);
         exit;
-
     } catch (PDOException $e) {
-        die("Query Failed: " . $e->getMessage());
+        echo json_encode([
+            "success" => false,
+            "errors" => ["server" => "Database error: " . $e->getMessage()]
+        ]);
+        exit;
     }
 } else {
     echo json_encode([
