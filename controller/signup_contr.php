@@ -35,5 +35,5 @@ function is_student_number_taken(object $pdo, string $student_number) {
 }
 
 function create_user(object $pdo, string $student_number, string $name, string $email, string $pass ) {
-    set_user( $pdo,  $student_number,  $name,  $email,  $pass)
+    set_user( $pdo,  $student_number,  $name,  $email,  $pass);
 }
