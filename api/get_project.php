@@ -32,6 +32,10 @@ try {
         $stmtMembers = $pdo->prepare("SELECT member_name FROM project_team_members WHERE project_id = ?");
         $stmtMembers->execute([$project['id']]);
         $project['team_members'] = $stmtMembers->fetchAll(PDO::FETCH_COLUMN);
+
+        $stmtImages = $pdo->prepare("SELECT image_path FROM project_images WHERE project_id = ?");
+        $stmtImages->execute([$project['id']]);
+        $project['images'] = $stmtImages->fetchAll(PDO::FETCH_COLUMN);
     }
 
     echo json_encode([
