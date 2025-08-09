@@ -12,6 +12,12 @@ try {
     $pdo = new PDO($dsn, $dbusername, $dbpassword);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo "Connection Failed: " . $e->getMessage();
+    header('Content-Type: application/json');
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "errors" => ["server" => "Database connection failed: " . $e->getMessage()]
+    ]);
+    exit;
 }
 ?>

@@ -5,7 +5,7 @@ project/          <---one parent folder
 ├── frontend/     <---Cloned COMSA-NOW 
 ├── backend/      <---Clone comsa-backend
 
-after cloning install a composer and then run [composer require vlucas/phpdotenv] in the terminal inside the /comsa-backend directory
+after cloning install a composer and then run [composer require vlucas/phpdotenv], [composer require phrity/websocket], [composer require cboden/ratchet] in the terminal inside the /comsa-backend directory
 create a .env file and add the database information:
 DB_DSN="mysql:host=localhost;dbname=databaseName"
 DB_USER="databseUsername" (usually root)
