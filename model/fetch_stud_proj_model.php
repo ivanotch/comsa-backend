@@ -6,7 +6,8 @@ function get_student_project(object $pdo, string $studentId): array
 {
     $query = "
         SELECT 
-            p.*, 
+            p.*,
+            s.profile_photo,
             s.name AS student_name,
             (
                 SELECT COUNT(*) 
