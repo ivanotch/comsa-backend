@@ -46,15 +46,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["user_name"] = htmlspecialchars($result["name"]);
         $_SESSION["user_email"] = htmlspecialchars($result["email"]);
         $_SESSION["user_student_number"] = htmlspecialchars($result["student_number"]);
+        $_SESSION["user_role"] = htmlspecialchars($result["role"]);
 
         $_SESSION["last_regeneration"] = time();
+
+        $redirectUrl = ($result["role"] === "admin") 
+            ? "../COMSA-NOW/pages-to-accounts/for-admin/admin-dashboard.php" 
+            : "../COMSA-NOW/pages-to-accounts/for-students/student-dashboard.php";
 
         $pdo = null;
         $stmt = null;
 
         echo json_encode([
             "success" => true,
-            "message" => "login successful"
+            "message" => "login successful",
+            "role" => $result["role"],
+            "redirect" => $redirectUrl
         ]);
         exit;
     } catch (PDOException $e) {
