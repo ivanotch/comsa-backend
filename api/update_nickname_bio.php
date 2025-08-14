@@ -1,7 +1,7 @@
 <?php
-require_once "/../backend/config/session.php";
-require_once "/../backend/config/db.php";
-require_once '/../backend/middleware/student_middleware.php';
+require_once __DIR__ . "/../../backend/config/session.php";
+require_once __DIR__ . "/../../backend/config/db.php";
+require_once __DIR__ . "/../../backend/middleware/student_middleware.php";
 
 $bio = "No bio yet...";
 $nickname = 'No nickname set';
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bio'])) {
         exit;
     } catch (PDOException $e) {
         $_SESSION['error'] = "Database error: " . $e->getMessage();
-        header("Location: profile-studs.php");
+        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 }
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nickname'])) {
     // Validate nickname (letters only)
     if (!preg_match('/^[A-Za-z]+$/', $new_nickname)) {
         $_SESSION['error'] = "Nickname can only contain letters (A-Z, a-z)";
-        header("Location: profile-studs.php");
+        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nickname'])) {
         exit;
     } catch (PDOException $e) {
         $_SESSION['error'] = "Database error: " . $e->getMessage();
-        header("Location: profile-studs.php");
+        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 }
