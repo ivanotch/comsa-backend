@@ -1,7 +1,11 @@
 <?php
-require_once "../../config/session.php";
-require_once "../../config/db.php";
-require_once "../../middleware/student_middleware.php";
+require_once __DIR__ . "/../config/session.php";
+require_once __DIR__ . "/../config/db.php";
+require_once __DIR__ . "/../middleware/student_middleware.php";
+
+
+//unused php code
+
 
 // Fetch user data including bio and nickname
 $user_id = $_SESSION['user_id'];
