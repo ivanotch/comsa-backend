@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bio'])) {
     // Validate bio length (100 characters max)
     if (strlen($new_bio) > 100) {
         $_SESSION['error'] = "Bio must be 100 characters or less";
-        header("Location: profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 
@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bio'])) {
         $_SESSION['success'] = "Bio updated successfully!";
         $bio = $new_bio;
 
-        header("Location: profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     } catch (PDOException $e) {
         $_SESSION['error'] = "Database error: " . $e->getMessage();
-        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 }
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nickname'])) {
     // Validate nickname (letters only)
     if (!preg_match('/^[A-Za-z]+$/', $new_nickname)) {
         $_SESSION['error'] = "Nickname can only contain letters (A-Z, a-z)";
-        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 
@@ -69,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nickname'])) {
         $_SESSION['user_nickname'] = $new_nickname;
         $nickname = $new_nickname;
 
-        header("Location: profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     } catch (PDOException $e) {
         $_SESSION['error'] = "Database error: " . $e->getMessage();
-        header("Location: ../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
+        header("Location: ../../COMSA-NOW/pages-to-accounts/for-students/profile-studs.php");
         exit;
     }
 }

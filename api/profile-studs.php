@@ -9,7 +9,7 @@ require_once __DIR__ . "/../middleware/student_middleware.php";
 
 // Fetch user data including bio and nickname
 $user_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT name, email, nickname, bio FROM student WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT name, email, nickname, bio FROM students WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
