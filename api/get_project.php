@@ -38,6 +38,10 @@ try {
         $project['images'] = $stmtImages->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    // Shuffle the array before returning
+shuffle($projects);
+
+
     echo json_encode([
         'success' => true,
         'posts' => $projects

@@ -4,10 +4,14 @@ CREATE TABLE students (
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL, -- hashed
-  profile_photo VARCHAR(255), -- optional path to profile image
+  profile_photo VARCHAR(255), -- optional path to profile image 
   role ENUM('student', 'admin') NOT NULL DEFAULT 'student', -- user role
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  nickname VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Letters only, no spaces/numbers/special chars',
+  bio TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Max 100 words, allows special chars/numbers',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chk_nickname_letters_only CHECK (nickname REGEXP '^[A-Za-z]+$' OR nickname IS NULL)
 );
+
 
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
