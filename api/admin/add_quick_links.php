@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 header('Content-Type: application/json');
 
-require_once '../config/session.php';
+require_once '../../config/session.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(400);
@@ -31,18 +31,18 @@ $category = $_POST['linkCategory'] ?? '';
 $icon = $_POST['linkIcon'] ?? '';
 
 try {
-    require_once '../config/db.php';
-    require_once '../model/add_quick_links_model.php';
-    require_once '../controller/add_quick_link_contr.php';
+    require_once '../../config/db.php';
+    require_once '../../model/admin/add_quick_links_model.php';
+    require_once '../../controller/admin/add_quick_link_contr.php';
 
     $errors = [];
 
     if (is_input_empty($title, $url, $category)) {
-        $errors['empty fields'] = "title, url, and category cannot be empty!";
+        $errors['empty_fields'] = "title, url, and category cannot be empty!";
     }
 
     if (is_link_invalid($url)) {
-        $errors['invalid url'] = "enter a valid url!";
+        $errors['invalid_url'] = "enter a valid url!";
     }
 
     if ($errors) {
