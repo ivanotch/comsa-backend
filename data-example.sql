@@ -20,6 +20,17 @@ CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 DEFAULT NULL 
 COMMENT 'Max 100 words, allows special chars/numbers';
 
+---------------------------------------NEW TABLE TO ADD----------------------------------------
+
+CREATE TABLE quick_links (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(100) NOT NULL,
+	url VARCHAR(100) NOT NULL,
+	category ENUM('academic', 'opportunity', 'support', 'resource') NOT NULL,
+	remix_icon VARCHAR(100),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
 -- For MySQL 8.0.16+ you can add constraints for the nickname
 ALTER TABLE students 
 ADD CONSTRAINT chk_nickname_letters_only 
