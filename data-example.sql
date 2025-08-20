@@ -31,7 +31,23 @@ CREATE TABLE quick_links (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 
+CREATE TABLE events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    status ENUM('active', 'upcoming', 'ended', 'draft') NOT NULL,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    event_image VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    carousel_status BOOLEAN NOT NULL
+);
+
+---------------------------------------NEW TABLE TO ADD----------------------------------------
+
+
+
 -- For MySQL 8.0.16+ you can add constraints for the nickname
-ALTER TABLE students 
-ADD CONSTRAINT chk_nickname_letters_only 
-CHECK (nickname REGEXP '^[A-Za-z]+$' OR nickname IS NULL);
+-- ALTER TABLE students 
+-- ADD CONSTRAINT chk_nickname_letters_only 
+-- CHECK (nickname REGEXP '^[A-Za-z]+$' OR nickname IS NULL);
