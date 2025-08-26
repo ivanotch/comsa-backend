@@ -45,12 +45,17 @@ CREATE TABLE events (
 
 CREATE TABLE admin_post (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT NULL,
     title VARCHAR(100) NOT NULL,
     post_image VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     post_status ENUM('published', 'draft', 'archived') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_admin_post_admin
+        FOREIGN KEY (admin_id) REFERENCES students(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
 );
 
 
