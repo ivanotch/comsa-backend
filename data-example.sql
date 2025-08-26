@@ -29,7 +29,7 @@ CREATE TABLE quick_links (
 	category ENUM('academic', 'opportunity', 'support', 'resource') NOT NULL,
 	remix_icon VARCHAR(100),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +43,48 @@ CREATE TABLE events (
     carousel_status BOOLEAN NOT NULL
 );
 
+CREATE TABLE admin_post (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT NULL,
+    title VARCHAR(100) NOT NULL,
+    post_image VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    post_status ENUM('published', 'draft', 'archived') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_admin_post_admin
+        FOREIGN KEY (admin_id) REFERENCES students(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+
+CREATE TABLE admin_tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    tag_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES admin_post(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_likes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  post_id INT NOT NULL,
+  student_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (post_id, student_id), -- prevent multiple likes from same user
+  FOREIGN KEY (post_id) REFERENCES admin_post(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_comments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  post_id INT NOT NULL,
+  student_id INT NOT NULL,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (post_id) REFERENCES admin_post(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
 ---------------------------------------NEW TABLE TO ADD----------------------------------------
 
 
