@@ -1,7 +1,13 @@
 <?php
+
 declare(strict_types=1);
 require_once "../../config/db.php"; // adjust path
 require_once "../../config/session.php";
+require_once '../../vendor/autoload.php';
+
+use WebSocket\Client;
+use WebSocket\Middleware\CloseHandler;
+use WebSocket\Middleware\PingResponder;
 
 header("Content-Type: application/json");
 
@@ -32,12 +38,38 @@ try {
     $stmt->execute([$studentId]);
     $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode([
+    $payload = json_encode([
+        "type" => "addPostComment",
+        "comment_id" => $commentId,
+        "postId" => $postId,
+        "comment" => $comment,
+        "admin_id" => $studentId,
+        "student_name" => $student['name'],
+        "student_photo" => $student['profile_photo'] ?? null
+    ]);
+
+    $response = [
         "success" => true,
         "comment_id" => $commentId,
         "student_name" => $student['name'],
         "student_photo" => $student['profile_photo'] ?? null
-    ]);
+    ];
+
+
+    try {
+        $client = new Client("ws://127.0.0.1:8080");
+        $client
+            ->addMiddleware(new CloseHandler())
+            ->addMiddleware(new PingResponder());
+
+        $client->text($payload);
+        $client->close();
+    } catch (Exception $e) {
+        error_log("WebSocket client error: " . $e->getMessage());
+    }
+
+    echo json_encode($response);
+
 } catch (Exception $e) {
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
 }
