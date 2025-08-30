@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(400);
     echo json_encode([
         "success" => false,
-        "errors" => ["general" => "Unauthorized Request"]
+        "errors" => "Unauthorized Request",
     ]);
     exit;
 }
@@ -20,23 +20,22 @@ if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode([
         "success" => false,
-        "errors" => ["general" => "Unauthorized Access"]
+        'errors' => 'Unauthorized Access'
     ]);
     exit;
 }
 
-$id = $_SESSION['user_id'];
-$title = $_POST['postTitle'] ?? "";
-$postContent = $_POST['postContent'] ?? "";
-$publishOption = $_POST['publishOption'] ?? '';
-$tags = $_POST['tags'] ?? [];
-
 try {
-    require_once '../../config/db.php';
-    require_once '../../model/admin/add_post_model.php';
-    require_once '../../controller/admin/add_post_contr.php';
+    $fn = $_POST["studentFirstName"] ?? "";
+    $ln = $_POST["studentLastName"] ?? "";
+    $email = $_POST["studentEmail"] ?? "";
+    $studentId = $_POST["studentID"] ?? "";
 
-    $errors = is_input_empty($title, $postContent);
+    require_once '../../config/db.php';
+    require_once '../../model/admin/add_student_model.php';
+    require_once '../../controller/admin/add_student_contr.php';
+
+    $errors = is_input_empty($fn, $ln, $email, $studentId);
 
     if (!empty($errors)) {
         http_response_code(422);
@@ -47,20 +46,18 @@ try {
         exit;
     }
 
-    // Start transaction here
-    $pdo->beginTransaction();
+    $name = "$fn $ln";
+    $password = strtoupper($ln);
 
-    $postId = add_post($pdo, $id, $title, null, $postContent, $publishOption, $tags);
+    $studentDataId = add_student($pdo, $studentId, $name, $email, $password, null);
 
-    // Handle image upload
-    if (!empty($_FILES['imageUpload']['name'])) {
-        $fileTmpPath = $_FILES['imageUpload']['tmp_name'];
-        $fileName = basename($_FILES['imageUpload']['name']);
+    if (!empty($_FILES['studentAvatar']['name'])) {
+        $fileTmpPath = $_FILES['studentAvatar']['tmp_name'];
+        $fileName = basename($_FILES['studentAvatar']['name']);
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
         $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         if (!in_array($fileExtension, $allowedExts)) {
-            $pdo->rollBack();
             http_response_code(422);
             echo json_encode([
                 "success" => false,
@@ -69,19 +66,8 @@ try {
             exit;
         }
 
-        // Optional: file size check (max 5MB)
-        if ($_FILES['imageUpload']['size'] > 5 * 1024 * 1024) {
-            $pdo->rollBack();
-            http_response_code(422);
-            echo json_encode([
-                "success" => false,
-                "errors" => ["image" => "File size exceeds 5MB limit."]
-            ]);
-            exit;
-        }
-
         $safeFileName = uniqid("img_", true) . "." . $fileExtension;
-        $uploadDir = __DIR__ . "/../../uploads/adminPosts/";
+        $uploadDir = __DIR__ . "/../../uploads/profile/";
         $destPath = $uploadDir . $safeFileName;
 
         if (!is_dir($uploadDir)) {
@@ -89,10 +75,10 @@ try {
         }
 
         if (move_uploaded_file($fileTmpPath, $destPath)) {
-            $postPath = "uploads/adminPosts/" . $safeFileName;
-            update_post_image($pdo, $postId, $postPath);
+            $studentImagePath = "uploads/profile/" . $safeFileName;
+            // Step 3: Update event with image path
+            update_student_profile($pdo, (int)$studentDataId, $studentImagePath);
         } else {
-            $pdo->rollBack();
             http_response_code(500);
             echo json_encode([
                 "success" => false,
@@ -102,21 +88,19 @@ try {
         }
     }
 
-    // Commit after both DB + image succeed
-    $pdo->commit();
-
     echo json_encode([
-        "success" => true,
-        "title" => $title,
-        "content" => $postContent,
-        "option" => $publishOption,
-        "tags" => $tags,
+        "success" => true
     ]);
-
+} catch (Exception $e) {
+    http_response_code(422);
+    echo json_encode([
+        "success" => false,
+        "errors" => ["general" => $e->getMessage()]
+    ]);
+    exit;
+    
 } catch (PDOException $e) {
-    if ($pdo->inTransaction()) $pdo->rollBack();
     error_log("DB error: " . $e->getMessage());
-    http_response_code(500);
     echo json_encode([
         "success" => false,
         "errors" => ["server" => "Internal server error. Please try again later."]
