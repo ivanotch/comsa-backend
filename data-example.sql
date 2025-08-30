@@ -1,5 +1,5 @@
 INSERT INTO `students` (`id`, `student_number`, `name`, `email`, `password`, `profile_photo`, `role`,`created_at`) VALUES
-(1, '234-99992', 'Kileoma', 'untalan.j.bscs22@gmail.com', '123', NULL, 'student', '2023-04-28 16:15:22');
+(1, '234-999923', 'Kileoma', 'untalan.j.bscs22@gmail.com', '123', NULL, 'student', '2023-04-28 16:15:22');
 
 
 

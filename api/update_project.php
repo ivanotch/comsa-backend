@@ -90,12 +90,7 @@ try {
     }
 
     // Handle file uploads if any
-    if (!empty($_FILES['mediaFiles'])) {
-        // First delete existing images (optional - you might want to keep them)
-        // $stmt = $pdo->prepare("DELETE FROM project_images WHERE project_id = ?");
-        // $stmt->execute([$projectId]);
-        
-        // Upload new images
+    if (!empty($_FILES['mediaFiles']['name'][0])) {
         $uploadDir = '../../uploads/projects/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
@@ -105,11 +100,15 @@ try {
         
         foreach ($_FILES['mediaFiles']['tmp_name'] as $key => $tmpName) {
             if ($_FILES['mediaFiles']['error'][$key] === UPLOAD_ERR_OK) {
-                $fileName = uniqid() . '_' . basename($_FILES['mediaFiles']['name'][$key]);
-                $targetPath = $uploadDir . $fileName;
+                // Generate safe and unique file name (consistent with upload code)
+                $name = $_FILES['mediaFiles']['name'][$key];
+                $ext = pathinfo($name, PATHINFO_EXTENSION);
+                $safeName = uniqid("img_", true) . "." . $ext;
+                $targetPath = $uploadDir . $safeName;
                 
                 if (move_uploaded_file($tmpName, $targetPath)) {
-                    $stmt->execute([$projectId, 'uploads/projects/' . $fileName]);
+                    // Use the same path format as the upload code
+                    $stmt->execute([$projectId, 'uploads/projects/' . $safeName]);
                 }
             }
         }

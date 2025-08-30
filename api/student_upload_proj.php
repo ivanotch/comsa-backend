@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             $safeName = uniqid("img_", true) . "." . $ext;
             $path = __DIR__ . "/../uploads/projects/" . $safeName; // adjust path if needed
-            $relativePath = "uploads/projects//" . $safeName; // path to store in DB
+            $relativePath = "uploads/projects/" . $safeName; // path to store in DB
 
             if (move_uploaded_file($tmp, $path)) {
                 $uploadedPaths[] = $relativePath;
