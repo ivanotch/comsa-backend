@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-function add_post(object $pdo, string $title, ?string $postImage, string $postContent, string $publishOption, array $tags): int
+function add_post(object $pdo, string $id, string $title, ?string $postImage, string $postContent, string $publishOption, array $tags): int
 {
-    $stmt = $pdo->prepare("INSERT INTO admin_post (title, post_image, content, post_status)
-                           VALUES (?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO admin_post (admin_id, title, post_image, content, post_status)
+                           VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([
+        $id,
         $title,
         $postImage ?? '',
         $postContent,
