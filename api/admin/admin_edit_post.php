@@ -76,8 +76,6 @@ try {
     $currentImage = $post['post_image'];
     $newImagePath = $currentImage; // default keep old
 
-    // Handle file upload
-    // Handle file upload
     if (isset($_FILES['editImageUpload']) && $_FILES['editImageUpload']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = "../../uploads/adminPosts/";  // ✅ save to adminPosts folder
         if (!is_dir($uploadDir)) {
