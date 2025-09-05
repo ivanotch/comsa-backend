@@ -85,8 +85,12 @@ CREATE TABLE post_comments (
   FOREIGN KEY (post_id) REFERENCES admin_post(id) ON DELETE CASCADE,
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
 );
----------------------------------------NEW TABLE TO ADD----------------------------------------
 
+---------------------------------------NEW TABLE TO ADD----------------------------------------
+---------------------------------------NEW TABLE TO ALTER--------------------------------------
+ALTER TABLE projects
+ADD COLUMN visibility ENUM('public', 'hidden') NOT NULL DEFAULT 'public',
+ADD COLUMN featured BOOLEAN NOT NULL DEFAULT FALSE;
 
 
 -- For MySQL 8.0.16+ you can add constraints for the nickname

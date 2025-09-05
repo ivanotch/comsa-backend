@@ -19,7 +19,7 @@ require_once '../model/fetch_stud_proj_model.php';
 
 try {
 
-    //get post and combine the tech and no. of likes and commentsw
+    //get post and combine the tech and no. of likes and comments
     $projects = get_student_project($pdo, $userId);
 
     foreach ($projects as &$project) {
@@ -41,7 +41,7 @@ try {
     // Shuffle the array before returning
 shuffle($projects);
 
-
+ 
     echo json_encode([
         'success' => true,
         'posts' => $projects

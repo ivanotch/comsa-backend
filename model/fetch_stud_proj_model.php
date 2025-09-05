@@ -33,9 +33,14 @@ function get_student_project(object $pdo, string $studentId): array
     $stmt->execute(['student_id' => $studentId]);
     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Convert liked_by_user from int (0/1) to boolean
     foreach ($projects as &$project) {
+        // Convert liked_by_user (0/1) → bool
         $project['liked_by_user'] = (bool) $project['liked_by_user'];
+
+        // Convert featured (0/1) → bool
+        $project['featured'] = (bool) $project['featured'];
+
+        // visibility stays as string ('public' / 'hidden')
     }
 
     return $projects;
