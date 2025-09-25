@@ -97,3 +97,17 @@ ADD COLUMN featured BOOLEAN NOT NULL DEFAULT FALSE;
 -- ALTER TABLE students 
 -- ADD CONSTRAINT chk_nickname_letters_only 
 -- CHECK (nickname REGEXP '^[A-Za-z]+$' OR nickname IS NULL);
+
+
+
+---------------------------------------NEW TABLE TO ALTER--------------------------------------
+
+-- Include Mayor, Vice-Mayor, Secretary in roles
+ALTER TABLE students 
+MODIFY role ENUM('student', 'admin', 'mayor', 'vice-mayor', 'secretary') 
+NOT NULL DEFAULT 'student';
+
+-- Include Year Level and Section in students table
+ALTER TABLE students
+ADD COLUMN year_level VARCHAR(50) NOT NULL,
+ADD COLUMN section VARCHAR(50) NOT NULL;
